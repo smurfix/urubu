@@ -37,7 +37,7 @@ tag_layout_warning = "Tags defined, but no {} layout found".format(tag_layout)
 
 
 def skip_yamlfm(f):
-    """Return source of a file without yaml frontmatter."""
+    """Return source of a file without yaml front matter."""
     f.readline()
     found = False
     lines = []
