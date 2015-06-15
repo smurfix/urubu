@@ -100,7 +100,10 @@ class ContentProcessor(object):
         for info in self.filelist:
             fn = info['fn']
             with open(fn, encoding='utf-8-sig') as inf:
-                src = skip_yamlfm(inf)
+                if 'frontmatter' in info and info['frontmatter'] is False:
+                    src = inf.read()
+                else:
+                    src = skip_yamlfm(inf)
             self.md.this = info
             self.md.toc = ''
             info['body'] = self.md.convert(src)
