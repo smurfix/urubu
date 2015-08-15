@@ -1,0 +1,12 @@
+Source: urubu
+Maintainer: Matthias Urlichs <matthias@urlichs.de>
+Section: python
+Priority: optional
+Build-Depends: python3-setuptools, python3-all, debhelper (>= 9)
+Standards-Version: 3.9.1
+
+Package: python3-urubu
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}
+Description: A micro CMS for static websites with a focus on good navigat
+
