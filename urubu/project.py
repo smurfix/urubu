@@ -216,15 +216,13 @@ class Project(object):
             title = info['components'][-1]
             chars = '-_'
             for c in chars:
-                if c in title:
-                    title = title.replace(c, ' ')
+                title = title.replace(c, ' ')
             info['title'] = title
         # date
         if 'date' not in info:
             info['date'] = info['mdate']
-        elif 'date' in info:
-            if not isinstance(info['date'], datetime.date):
-                raise UrubuError(date_error.format(relfn))
+        elif not isinstance(info['date'], datetime.date):
+            raise UrubuError(date_error.format(relfn))
         # tags
         if 'tags' in info:
             # TODO: make sure it's a list of strings
