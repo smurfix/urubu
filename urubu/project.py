@@ -36,7 +36,7 @@ from urubu import readers, processors
 from urubu.config import (configfn, siteinfofn, workdir, sitedir,
                           tagdir, tagid, tagindexid, tag_layout)
 
-yamlfm_warning = "No yaml front matter in '{}' - ignored"
+yamlfm_warning = "No yaml front matter in '{}', defaults will be used"
 ambig_reflink_error = "Ambiguous reference id '{}'"
 undef_ref_error = "Undefined reference '{}' in '{}'"
 ambig_ref_error = "Ambiguous reference id '{}' in '{}'"
@@ -176,7 +176,7 @@ class Project(object):
                     meta = readers.get_yamlfm(relfn)
                     if meta is None:
                         warn(yamlfm_warning.format(relfn), UrubuWarning)
-                        continue
+                        meta = {'frontmatter': False}
                     fileinfo = self.make_fileinfo(relfn, meta)
                     self.filelist.append(fileinfo)
                     # validate after file info has been added so it can be used
@@ -197,7 +197,7 @@ class Project(object):
     def validate_fileinfo(self, relfn, info):
         # layout is mandatory
         if 'layout' not in info:
-            raise UrubuError(undef_info_error.format('File', relfn, 'layout'))
+            info['layout'] = 'simple_page'
         layout = info['layout']
         # modification date, always available
         t = os.path.getmtime(relfn)
@@ -213,11 +213,16 @@ class Project(object):
             self.layouts.append(layout)
         # title
         if 'title' not in info:
-            raise UrubuError(undef_info_error.format('File', relfn, 'title'))
+            title = info['components'][-1]
+            chars = '-_'
+            for c in chars:
+                title = title.replace(c, ' ')
+            info['title'] = title
         # date
-        if 'date' in info:
-            if not isinstance(info['date'], datetime.date):
-                raise UrubuError(date_error.format(relfn))
+        if 'date' not in info:
+            info['date'] = info['mdate']
+        elif not isinstance(info['date'], datetime.date):
+            raise UrubuError(date_error.format(relfn))
         # tags
         if 'tags' in info:
             # TODO: make sure it's a list of strings

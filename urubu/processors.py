@@ -37,7 +37,7 @@ tag_layout_warning = "Tags defined, but no {} layout found".format(tag_layout)
 
 
 def skip_yamlfm(f):
-    """Return source of a file without yaml frontmatter."""
+    """Return source of a file without yaml front matter."""
     f.readline()
     found = False
     lines = []
@@ -100,7 +100,10 @@ class ContentProcessor(object):
         for info in self.filelist:
             fn = info['fn']
             with open(fn, encoding='utf-8-sig') as inf:
-                src = skip_yamlfm(inf)
+                if not info.get('frontmatter',True):
+                    src = inf.read()
+                else:
+                    src = skip_yamlfm(inf)
             self.md.this = info
             self.md.toc = ''
             info['body'] = self.md.convert(src)
