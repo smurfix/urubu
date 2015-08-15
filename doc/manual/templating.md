@@ -50,6 +50,12 @@ check it out when using templates in Urubu.
 A great feature of Jinja2 is template inheritance. With this technique,
 you can easily generate small variations of a parent template.
 
+If the [hamlish_jinja][hamlish_jinja] module is installed, you can use HAML
+syntax in your templates. Simply name them with a `.haml` extension instead
+of `.html`.
+
+[hamlish_jinja]: https://github.com/Pitmairen/hamlish-jinja
+
 Link objects
 ============
 
